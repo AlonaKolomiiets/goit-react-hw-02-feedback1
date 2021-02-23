@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Statistics from "./components/Statistics/Statistics";
 import FeedbackOptions from "./components/FeedbackOptions/FeedbackOptions";
+import Section from "./components/Section/Section";
+import Notification from "./components/Notification/Notification";
 // import PropTypes from 'prop-types';
 
 class App extends Component {
@@ -10,7 +12,7 @@ class App extends Component {
     bad: 0,
   };
 
-  countFeedBack = (value) => {
+  countFeedback = (value) => {
     switch (value) {
       case "good":
         this.setState({ good: this.state.good + 1 });
@@ -29,27 +31,35 @@ class App extends Component {
     return this.state.good + this.state.neutral + this.state.bad;
   };
   countPositiveFeedbackPercentage = () => {
-    return ((this.state.good * 100) / this.countTotalFeedback()).toFixed(0);
+    const total = this.countTotalFeedback();
+    return total ? ((this.state.good * 100) / total).toFixed(0) : 0;
   };
   render() {
     const { good, neutral, bad } = this.state;
+    const total = this.countTotalFeedback();
     return (
-      <div>
-        <h1>Please leave feedback</h1>
-        <FeedbackOptions
-          options={Object.keys(this.state)}
-          onLeaveFeedback={this.countFeedBack}
-        />
+      <>
+        <Section title={"Please leave feedback"}>
+          <FeedbackOptions
+            options={Object.keys(this.state)}
+            onLeaveFeedback={this.countFeedback}
+          />
+        </Section>
 
-        <h2>Statistics</h2>
-        <Statistics
-          good={good}
-          neutral={neutral}
-          bad={bad}
-          total={this.countTotalFeedback()}
-          positivePercentage={this.countPositiveFeedbackPercentage()}
-        />
-      </div>
+        <Section title={"Statistics"}>
+          {total ? (
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={total}
+              positivePercentage={this.countPositiveFeedbackPercentage()}
+            />
+          ) : (
+            <Notification message="No feedback given" />
+          )}
+        </Section>
+      </>
     );
   }
 }
