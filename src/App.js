@@ -3,7 +3,6 @@ import Statistics from "./components/Statistics/Statistics";
 import FeedbackOptions from "./components/FeedbackOptions/FeedbackOptions";
 import Section from "./components/Section/Section";
 import Notification from "./components/Notification/Notification";
-// import PropTypes from 'prop-types';
 
 class App extends Component {
   state = {
@@ -63,9 +62,5 @@ class App extends Component {
     );
   }
 }
-
-// App.propTypes = {
-
-// };
 
 export default App;
